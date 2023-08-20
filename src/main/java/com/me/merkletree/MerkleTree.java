@@ -33,23 +33,31 @@ public class MerkleTree {
         List<Bucket> rightBucket = buckets.subList(halfSize, buckets.size());
 
         long tempHashValue = 0L;
-
-        if (leftBucket.size() > 0) {
-            Node leftNode = new Node();
-            parentNode.setLeft(leftNode);
-            tempHashValue += addNode(leftNode, leftBucket);
-        }
-
-        if (rightBucket.size() > 0) {
-            Node rightNode = new Node();
-            parentNode.setRight(rightNode);
-            tempHashValue += addNode(rightNode, rightBucket);
-        }
+        tempHashValue += addLeftSide(parentNode, leftBucket);
+        tempHashValue += addRightSide(parentNode, rightBucket);
 
         long nodeHashValue = HashUtils.getHash(String.valueOf(tempHashValue));
         parentNode.setNodeHash(nodeHashValue);
 
         return nodeHashValue;
+    }
+
+    private long addLeftSide(Node parentNode, List<Bucket> leftBucket) {
+        if (leftBucket.size() > 0) {
+            Node leftNode = new Node();
+            parentNode.setLeft(leftNode);
+            return addNode(leftNode, leftBucket);
+        }
+        return 0L;
+    }
+
+    private long addRightSide(Node parentNode, List<Bucket> rightBucket) {
+        if (rightBucket.size() > 0) {
+            Node rightNode = new Node();
+            parentNode.setRight(rightNode);
+            return addNode(rightNode, rightBucket);
+        }
+        return 0;
     }
 
 }
