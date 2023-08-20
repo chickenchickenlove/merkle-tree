@@ -7,8 +7,15 @@ public class MD5Hash {
 
     private final MessageDigest instance;
 
-    public MD5Hash() throws NoSuchAlgorithmException {
-        this.instance = MessageDigest.getInstance("MD5");
+    public MD5Hash() {
+        MessageDigest instance;
+        try {
+            instance = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            instance = null;
+        }
+        this.instance = instance;
     }
 
     public long hash(String key) {

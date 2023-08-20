@@ -7,13 +7,11 @@ public class Bucket {
     private final String[] store;
     private final int bucketSize;
     private final int bucketIndex;
-    private final MD5Hash hash;
 
-    public Bucket(int bucketSize, int bucketIndex, MD5Hash hash) {
+    public Bucket(int bucketSize, int bucketIndex) {
         this.store = new String[bucketSize];
         this.bucketSize = bucketSize;
         this.bucketIndex = bucketIndex;
-        this.hash = hash;
     }
 
     public void put(int index, String value) {
@@ -28,9 +26,9 @@ public class Bucket {
         final int baseIndex = bucketSize * bucketIndex;
         final long hashSum = IntStream.range(0, store.length)
                 .filter(index -> store[index] != null)
-                .mapToLong(index -> hash.hash(String.valueOf(baseIndex + index)))
+                .mapToLong(index -> HashUtils.getHash(String.valueOf(baseIndex + index)))
                 .sum();
-        final long bucketHash = hash.hash(String.valueOf(hashSum));
+        final long bucketHash = HashUtils.getHash(String.valueOf(hashSum));
         return bucketHash;
     }
 

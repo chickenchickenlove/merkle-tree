@@ -18,8 +18,7 @@ class BucketTest {
         // Given:
         final int bucketSize = 3;
         final int bucketIndex = 0;
-        final MD5Hash hash = new MD5Hash();
-        final Bucket bucket = new Bucket(bucketSize, bucketIndex, hash);
+        final Bucket bucket = new Bucket(bucketSize, bucketIndex);
         final List<String> values = List.of("A", "B", "C");
 
 
@@ -38,8 +37,7 @@ class BucketTest {
         // Given:
         final int bucketSize = 3;
         final int bucketIndex = 0;
-        final MD5Hash hash = new MD5Hash();
-        final Bucket bucket = new Bucket(bucketSize, bucketIndex, hash);
+        final Bucket bucket = new Bucket(bucketSize, bucketIndex);
         final List<String> values = List.of("A", "B", "C");
         final long expectedValue = 252667656L;
 
@@ -58,10 +56,9 @@ class BucketTest {
         // Given:
         final int bucketSize = 3;
         final int bucketIndex = 0;
-        final MD5Hash hash = new MD5Hash();
 
-        final Bucket bucket1 = new Bucket(bucketSize, bucketIndex, hash);
-        final Bucket bucket2 = new Bucket(bucketSize, bucketIndex + 1, hash);
+        final Bucket bucket1 = new Bucket(bucketSize, bucketIndex);
+        final Bucket bucket2 = new Bucket(bucketSize, bucketIndex + 1);
         final List<String> values = List.of("A", "B", "C");
 
         IntStream.range(0, values.size())
