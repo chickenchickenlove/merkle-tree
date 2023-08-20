@@ -63,15 +63,6 @@ public class MerkleTree {
         return 0;
     }
 
-    public Node getLeftNode(Node node) {
-        return node.getLeft();
-    }
-
-    public Node getRightNode(Node node) {
-        return node.getRight();
-    }
-
-
     public List<Integer> compare(MerkleTree tree) {
         Node otherRootNode = tree.getRoot();
         return compareRecursive(this.root, otherRootNode);
