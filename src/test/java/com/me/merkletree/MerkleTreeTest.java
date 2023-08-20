@@ -95,19 +95,19 @@ class MerkleTreeTest {
     void test4() {
         // Given:
         final int bucketSize = 3;
-        final int numberOfBucket = 3;
 
-        List<Bucket> buckets = IntStream.range(0, numberOfBucket)
-                .mapToObj(index -> createBucket(bucketSize, index, values1))
-                .toList();
+        List<Bucket> buckets1 = List.of(
+                createBucket(bucketSize, 0, values1),
+                createBucket(bucketSize, 1, values1),
+                createBucket(bucketSize, 2, values1));
 
-        List<Bucket> otherBuckets = List.of(
-                createBucket(3, 0, values1),
-                createBucket(3, 1, values1),
-                createBucket(3, 2, values2));
+        List<Bucket> buckets2 = List.of(
+                createBucket(bucketSize, 0, values1),
+                createBucket(bucketSize, 1, values1),
+                createBucket(bucketSize, 2, values2));
 
-        MerkleTree merkleTree1 = new MerkleTree(buckets);
-        MerkleTree merkleTree2 = new MerkleTree(otherBuckets);
+        MerkleTree merkleTree1 = new MerkleTree(buckets1);
+        MerkleTree merkleTree2 = new MerkleTree(buckets2);
 
         // When:
         List<Integer> result = merkleTree1.compare(merkleTree2);
@@ -116,6 +116,34 @@ class MerkleTreeTest {
         // Then
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0)).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("compare Test.")
+    void test5() {
+        // Given:
+        final int bucketSize = 3;
+
+        List<Bucket> buckets1 = List.of(
+                createBucket(bucketSize, 0, values1),
+                createBucket(bucketSize, 1, values2),
+                createBucket(bucketSize, 2, values1));
+
+        List<Bucket> buckets2 = List.of(
+                createBucket(bucketSize, 0, values1),
+                createBucket(bucketSize, 1, values1),
+                createBucket(bucketSize, 2, values2));
+
+        MerkleTree merkleTree1 = new MerkleTree(buckets1);
+        MerkleTree merkleTree2 = new MerkleTree(buckets2);
+
+        // When:
+        List<Integer> result = merkleTree1.compare(merkleTree2);
+
+
+        // Then
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result).containsExactly(1, 2);
     }
 
 
