@@ -28,8 +28,7 @@ public class MerkleTree {
 
         int halfSize = (buckets.size() % 2) == 0 ?
                 buckets.size() / 2 :
-                (buckets.size() / 2) + 1;
-//        int halfSize = buckets.size() / 2;
+                buckets.size() / 2 + 1;
         List<Bucket> leftBucket = buckets.subList(0, halfSize);
         List<Bucket> rightBucket = buckets.subList(halfSize, buckets.size());
 
