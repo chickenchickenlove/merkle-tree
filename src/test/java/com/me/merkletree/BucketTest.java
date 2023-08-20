@@ -2,7 +2,6 @@ package com.me.merkletree;
 
 import org.junit.jupiter.api.Test;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -14,7 +13,7 @@ class BucketTest {
 
 
     @Test
-    void test1() throws NoSuchAlgorithmException {
+    void test1(){
         // Given:
         final int bucketSize = 3;
         final int bucketIndex = 0;
@@ -33,7 +32,7 @@ class BucketTest {
     }
 
     @Test
-    void test2() throws NoSuchAlgorithmException {
+    void test2(){
         // Given:
         final int bucketSize = 3;
         final int bucketIndex = 0;
@@ -52,7 +51,7 @@ class BucketTest {
     }
 
     @Test
-    void test3() throws NoSuchAlgorithmException {
+    void test3(){
         // Given:
         final int bucketSize = 3;
         final int bucketIndex = 0;
