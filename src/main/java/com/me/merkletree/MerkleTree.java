@@ -1,8 +1,11 @@
 package com.me.merkletree;
 
+import com.sun.source.tree.Tree;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class MerkleTree {
@@ -60,4 +63,51 @@ public class MerkleTree {
         return 0;
     }
 
+    public Node getLeftNode(Node node) {
+        return node.getLeft();
+    }
+
+    public Node getRightNode(Node node) {
+        return node.getRight();
+    }
+
+
+    public List<Integer> compare(MerkleTree tree) {
+        Node otherRootNode = tree.getRoot();
+        return compareRecursive(this.root, otherRootNode);
+    }
+
+    private List<Integer> compareRecursive(Node parentNode, Node comparedParentNode) {
+        // In case of leafNode.
+        if (Objects.nonNull(parentNode.getBucket()) && Objects.nonNull(comparedParentNode.getBucket())) {
+            if (parentNode.getNodeHash() != comparedParentNode.getNodeHash()) {
+                return List.of(parentNode.getBucket().getBucketIndex());
+            }
+        }
+
+        // In case of not leafNode.
+        ArrayList<Integer> result = new ArrayList<>();
+
+        Node leftNode = parentNode.getLeft();
+        Node comparedLeftNode = comparedParentNode.getLeft();
+
+        if (Objects.nonNull(leftNode) && Objects.nonNull(comparedLeftNode)) {
+            if (leftNode.getNodeHash() != comparedLeftNode.getNodeHash()) {
+                List<Integer> leftNodeResult = compareRecursive(leftNode, comparedLeftNode);
+                result.addAll(leftNodeResult);
+            }
+        }
+
+        Node rightNode = parentNode.getRight();
+        Node comparedRightNode = comparedParentNode.getRight();
+
+        if (Objects.nonNull(rightNode) && Objects.nonNull(comparedRightNode)) {
+            if (rightNode.getNodeHash() != comparedRightNode.getNodeHash()) {
+                List<Integer> rightNodeResult = compareRecursive(rightNode, comparedRightNode);
+                result.addAll(rightNodeResult);
+            }
+        }
+
+        return result;
+    }
 }

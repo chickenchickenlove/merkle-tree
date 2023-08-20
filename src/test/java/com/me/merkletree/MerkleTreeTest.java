@@ -12,6 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MerkleTreeTest {
 
+    final List<String> values1 = List.of("A", "B", "C");
+    final List<String> values2 = List.of("A", "B");
+
+
     @Test
     @DisplayName("in case of even.")
     void test1() {
@@ -20,7 +24,7 @@ class MerkleTreeTest {
         final int bucketSize = 3;
         final int numberOfBucket = 4;
         List<Bucket> buckets = IntStream.range(0, numberOfBucket)
-                .mapToObj(index -> createBucket(bucketSize, index))
+                .mapToObj(index -> createBucket(bucketSize, index, values1))
                 .toList();
 
         long leftNodeHash = HashUtils.getHash(String.valueOf(
@@ -47,7 +51,7 @@ class MerkleTreeTest {
         final int bucketSize = 3;
         final int numberOfBucket = 3;
         List<Bucket> buckets = IntStream.range(0, numberOfBucket)
-                .mapToObj(index -> createBucket(bucketSize, index))
+                .mapToObj(index -> createBucket(bucketSize, index, values1))
                 .toList();
 
         long leftNodeHash = HashUtils.getHash(String.valueOf(
@@ -64,9 +68,59 @@ class MerkleTreeTest {
 
     }
 
-    Bucket createBucket(int bucketSize, int bucketIndex) {
+    @Test
+    @DisplayName("compare Test.")
+    void test3() {
+
+        // Given:
+        final int bucketSize = 3;
+        final int numberOfBucket = 3;
+        List<Bucket> buckets = IntStream.range(0, numberOfBucket)
+                .mapToObj(index -> createBucket(bucketSize, index, values1))
+                .toList();
+
+        MerkleTree merkleTree1 = new MerkleTree(buckets);
+        MerkleTree merkleTree2 = new MerkleTree(buckets);
+
+        // When:
+        List<Integer> result = merkleTree1.compare(merkleTree2);
+
+
+        // Then
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("compare Test.")
+    void test4() {
+        // Given:
+        final int bucketSize = 3;
+        final int numberOfBucket = 3;
+
+        List<Bucket> buckets = IntStream.range(0, numberOfBucket)
+                .mapToObj(index -> createBucket(bucketSize, index, values1))
+                .toList();
+
+        List<Bucket> otherBuckets = List.of(
+                createBucket(3, 0, values1),
+                createBucket(3, 1, values1),
+                createBucket(3, 2, values2));
+
+        MerkleTree merkleTree1 = new MerkleTree(buckets);
+        MerkleTree merkleTree2 = new MerkleTree(otherBuckets);
+
+        // When:
+        List<Integer> result = merkleTree1.compare(merkleTree2);
+
+
+        // Then
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0)).isEqualTo(2);
+    }
+
+
+    Bucket createBucket(int bucketSize, int bucketIndex, List<String> values) {
         final Bucket bucket = new Bucket(bucketSize, bucketIndex);
-        final List<String> values = List.of("A", "B", "C");
         IntStream.range(0, values.size())
                 .forEach(index -> bucket.put(index, values.get(index)));
         return bucket;

@@ -32,4 +32,7 @@ public class Bucket {
         return bucketHash;
     }
 
+    public int getBucketIndex() {
+        return bucketIndex;
+    }
 }
